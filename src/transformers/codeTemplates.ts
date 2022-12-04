@@ -23,7 +23,7 @@ export function addFunction(
   optional?: {
     specifier?: string;
     returnType?: string;
-    arguments?: string[] | undefined;
+    arguments?: string[];
   }
 ) {
   container.push(
@@ -35,5 +35,15 @@ export function addFunction(
       ...body.map((e) => LINE_TABULATION + e),
       "}",
     ]
+  );
+}
+
+export function addFunctionCall(
+  container: string[],
+  name: string,
+  args?: string[],
+) {
+  container.push(
+    `${name}(${"".concat(...(args ?? []))});`
   );
 }

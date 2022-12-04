@@ -5,6 +5,7 @@ export const mainCTemplate: FileAST = {
   defines: [],
   privateVariables: [],
   privateFunctionPrototypes: [],
+  privateFunctions: [],
   includes: [],
   main: [],
   path: "main.c",

@@ -28,7 +28,10 @@ function generateSource(fileAst: FileAST) {
   result += fileAst.main.map((e) => LINE_TABULATION + e).join("\n");
   result += "\n";
   result += `${LINE_TABULATION}return 0;\n`;
-  result += "}";
+  result += "}\n\n";
+
+  result += fileAst.privateFunctions.join("\n");
+  result += "\n";
 
   return result;
 }

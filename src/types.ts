@@ -35,6 +35,11 @@ export interface FileAST {
   privateFunctionPrototypes: string[];
 
   /**
+   * Упорядоченные определения функций после int main() {}
+   */
+  privateFunctions: string[];
+
+  /**
    * Упорядоченные строки кода в теле функции int main() {}
    */
   main: string[];
