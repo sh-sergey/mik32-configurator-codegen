@@ -1,3 +1,5 @@
+import { RootState } from "./transformers";
+
 export enum FileType {
   HEADER = "header",
   SOURCE = "source",
@@ -33,7 +35,7 @@ export interface FileAST {
   main: string[];
 }
 
-export type Transformer = (context: TransformerContext) => TransformerContext;
+export type Transformer = (context: TransformerContext, rootState: RootState) => TransformerContext;
 
 type FilePath = string;
 export interface TransformerContext {

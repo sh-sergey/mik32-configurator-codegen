@@ -1,11 +1,12 @@
 import { writeFile } from "fs/promises";
 import { generateFileFromAST } from "./generator";
 import { TEMPLATES } from "./templates";
-import { bindAll } from "./transformers";
+import { bindAll, RootState } from "./transformers";
 import { getSortedTransformers } from "./transformers/storage";
+import { RtcSourceType } from "./transformers/timers/rtc";
 import { FileType, TransformerContext } from "./types";
 
-export function transform() {
+export function transform(rootState: RootState) {
   const transformers = getSortedTransformers();
 
   let context: TransformerContext = {
@@ -33,7 +34,7 @@ export function transform() {
   };
 
   transformers.forEach((transformer) => {
-    context = transformer({ ...context });
+    context = transformer({ ...context }, rootState);
     context.appliedTransformers.push(transformer);
   });
 
@@ -43,8 +44,8 @@ export function transform() {
 // Register all transformers
 bindAll();
 
-async function run() {
-  const context = transform();
+async function run(rootState: RootState) {
+  const context = transform(rootState);
 
   const files = [...context.filesMap.values()];
 
@@ -60,4 +61,24 @@ async function run() {
   // TODO: save to file, to db, etc.
 }
 
-run().catch(console.error);
+const mockRootState: RootState = {
+  timers: {
+    rtc: {
+      alarmEnabled: false,
+      rtcEnabled: true,
+      rtcSource: RtcSourceType.External,
+      rtcDateTime: {
+        year: 2022,
+        month: 11,
+        weekDay: 6,
+        day: 3,
+        hours: 21,
+        minutes: 20,
+        seconds: 15,
+      },
+      rtcRegisters: [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    },
+  },
+};
+
+run(mockRootState).catch(console.error);

@@ -14,6 +14,7 @@ function generateSource(fileAst: FileAST) {
 
   result += "int main() {\n";
   result += fileAst.main.map((e) => "  " + e).join("\n");
+  result += "\n";
   result += "  return 0;\n";
   result += "}";
 
