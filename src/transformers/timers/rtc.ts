@@ -1,4 +1,5 @@
 import { FileType, Transformer } from "../../types";
+import { addFunction, addFunctionPrototype } from "../codeTemplates";
 
 // @see https://github.com/iamcsharper/react-configurator/blob/main/src/store/timers/rtc.ts
 export enum RtcSourceType {
@@ -34,8 +35,12 @@ export const transformRtc: Transformer = (context, { timers: { rtc } }) => {
   const mainc = context.getOrCreateFile("main.c", FileType.SOURCE);
 
   if (rtc.rtcEnabled) {
-    mainc.includes.push("#include <lib/rtc>");
+    mainc.includes.push("#include <rtc.h>");
     const { rtcDateTime } = rtc;
+
+    addFunctionPrototype(mainc.privateFunctionPrototypes, "MX_RTC_Init", {
+      specifier: "static",
+    });
 
     const rtcArgs = `${rtcDateTime.hours}, ${rtcDateTime.minutes}, ${rtcDateTime.seconds}`;
 
@@ -47,7 +52,7 @@ export const transformRtc: Transformer = (context, { timers: { rtc } }) => {
     // bla bla example
     mainc.includes.push("#include <iostream>");
     mainc.defines.push('#define HELLO_WORLD "Hello, world!"');
-    mainc.functions.push(
+    mainc.privateFunctionPrototypes.push(
       ...[GENERATED_BY, "int test() {", "printf(HELLO_WORLD);", "}", ""]
     );
 

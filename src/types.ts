@@ -25,12 +25,17 @@ export interface FileAST {
   defines: string[];
 
   /**
-   * Упорядоченные объявления функций до int main() {}
+   * Упорядоченные объявления констант до функций
    */
-  functions: string[];
+   privateVariables: string[];
 
   /**
-   * Упорядоченные строки кода в тее функции int main() {}
+   * Упорядоченные объявления функций до int main() {}
+   */
+  privateFunctionPrototypes: string[];
+
+  /**
+   * Упорядоченные строки кода в теле функции int main() {}
    */
   main: string[];
 }
